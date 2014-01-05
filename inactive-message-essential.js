@@ -13,9 +13,9 @@ catch(e) { $ = window.$; }
 
 $(document).ready(function() {
     
-	$(document).ajaxSuccess(function(e,xhr,settings){    
+    $(document).ajaxSuccess(function(e,xhr,settings){    
         if (settings.url.indexOf("page=messages") == -1) return;
-            
+        
         $('#mailz tr.entry').each(function() {
             if (!$(this).find('.subject .status_abbr_longinactive, .subject .status_abbr_inactive').length) {
                 return true;
@@ -31,6 +31,21 @@ $(document).ready(function() {
             
             tableReport.find('#showSpyReportsNow .material th').prepend('<a href="#" class="inactive-msg-view">voir</a> - ');
             
+            var total = 0;
+            tableReport.find('#showSpyReportsNow .spy2 td:not(.item)').each(function(index) {
+                if (index === 3) {
+                    return false;
+                }
+                
+                total += parseInt($(this).text().replace (/\D+/gi, ""));
+            });
+
+            var color = 'grey';
+            if (total / 2 > 6000) {
+             	var color = 'red';   
+            }
+            
+            tableReport.find('#showSpyReportsNow .material th').prepend(' <span style="color: ' + color + ' !important;">' + total + '</span> - ');
         });
     });
     
@@ -40,4 +55,3 @@ $(document).ready(function() {
         $(this).parents('#showSpyReportsNow').find('.spy').show();
     });
 });
-
